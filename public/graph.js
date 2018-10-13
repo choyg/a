@@ -17,6 +17,7 @@ class Graph {
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = '#444';
       ctx.strokeStyle = 'grey';
+      ctx.lineWidth = 1;
       Object.keys(vertices).forEach(vertex => {
         vertices[vertex].vertices.forEach(key => {
           const v = vertices[key];
@@ -83,9 +84,29 @@ class Graph {
       .post('/graph', { vertexArray, source: this.start.key, dest: this.end.key })
       .then(response => {
         const path = response.data;
-        console.log(path);
+        this.drawPath(path);
       })
       .catch(err => console.error(err));
+  }
+
+  /**
+   * Draws a path between the given keys. Does not validate for edges.
+   * @param {string[]} keys Graph vertex keys
+   */
+  drawPath(keys) {
+    const ctx = this.ctx;
+    for (let i = 0; i < keys.length; i++) {
+      if (i + 1 >= keys.length) return;
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = 'yellow';
+      ctx.beginPath();
+      ctx.moveTo(this.graph[i].x, this.graph[i].y);
+      ctx.lineTo(this.graph[i + 1].x, this.graph[i + 1].y);
+      ctx.stroke();
+      if (i === 0) continue;
+      ctx.fillStyle = 'green';
+      ctx.fillRect(this.graph[i].x - 5, this.graph[i].y - 5, 10, 10);
+    }
   }
 
   setStart(vertex) {
