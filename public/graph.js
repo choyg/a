@@ -43,10 +43,12 @@ function graph(canvas) {
   function generateVertices(count, width, height) {
     const vertices = {};
     for (let i = 0; i < count; i++) {
-      vertices[i] = {};
-      vertices[i]['x'] = Math.random() * width;
-      vertices[i]['y'] = Math.random() * height;
-      vertices[i]['vertices'] = [];
+      vertices[i] = {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vertices: [],
+        key: i
+      };
     }
     return vertices;
   }
@@ -85,8 +87,9 @@ function graph(canvas) {
  * @param {*} dest
  */
 function getShortestPath(graph, source, dest) {
+  const vertexArray = Object.entries(graph).map(arr => arr[1]);
   axios
-    .post('/graph', JSON.stringify({ vertexMap: graph, source, dest }))
+    .post('/graph', JSON.stringify({ vertexArray, source, dest }))
     .then(response => {
       const path = response.data;
       console.log(path);
