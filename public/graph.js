@@ -29,7 +29,9 @@ function graph(canvas) {
         renderer.stroke();
       });
     });
-    Object.keys(vertices).forEach(v => renderer.fillRect(v.x - 5, v.y - 5, 10, 10));
+    Object.keys(vertices).forEach(v =>
+      renderer.fillRect(vertices[v].x - 5, vertices[v].y - 5, 10, 10)
+    );
   }
 
   /**
@@ -84,11 +86,10 @@ function graph(canvas) {
  */
 function getShortestPath(graph, source, dest) {
   axios
-    .post('/graph', JSON.stringify({ vertexMap: graph, source, dest }) )
+    .post('/graph', JSON.stringify({ vertexMap: graph, source, dest }))
     .then(response => {
       const path = response.data;
       console.log(path);
     })
     .catch(err => console.error(err));
 }
-
