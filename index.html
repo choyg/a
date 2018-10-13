@@ -24,9 +24,9 @@
   <script src="public/graph.js"></script>
   <script src="public/hovermenu.js"></script>
   <script>
-    let g = createGraph();
+    let g = graph(document.getElementById('canvas'));
     document.getElementById('new-graph').onclick = function () {
-      g = createGraph();
+      g = graph(document.getElementById('canvas'));
     }
     document.getElementById('a-star').onclick = function () {
       getShortestPath(g.graph, g.startKey, g.endKey)
