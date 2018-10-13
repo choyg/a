@@ -89,7 +89,7 @@ function graph(canvas) {
 function getShortestPath(graph, source, dest) {
   const vertexArray = Object.entries(graph).map(arr => arr[1]);
   axios
-    .post('/graph', JSON.stringify({ vertexArray, source, dest }))
+    .post('/graph', { vertexArray, source, dest })
     .then(response => {
       const path = response.data;
       console.log(path);
