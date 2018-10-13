@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>YouTube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="public/main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="public/normalize.css" />
+</head>
+
+<body>
+  <canvas id="canvas" width="1200" height="800"></canvas>
+  <div class="hover-menu">
+    <h2>Gotta Go Eat Grass</h2>
+    <h4 class="no-margins">Graph</h4>
+    <button id="new-graph" class="mt-sm mb-md">New Graph</button>
+    <h4 class="no-margins">Algorithms</h4>
+    <button class="mt-sm">Dijkstra's</button>
+    <button id="a-star" class="mt-sm">A*</button>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="public/graph.js"></script>
+  <script src="public/hovermenu.js"></script>
+  <script>
+    let g = createGraph();
+    document.getElementById('new-graph').onclick = function () {
+      g = createGraph();
+    }
+    document.getElementById('a-star').onclick = function () {
+      getShortestPath(g.graph, g.startKey, g.endKey)
+    }
+  </script>
+</body>
+
+</html>
