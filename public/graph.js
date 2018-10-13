@@ -1,6 +1,7 @@
 class Graph {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     const vertexCount = 100;
     const graph = generateVertices(vertexCount, canvas.width, canvas.height);
     generateEdges(graph);
