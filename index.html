@@ -24,12 +24,15 @@
   <script src="public/graph.js"></script>
   <script src="public/hovermenu.js"></script>
   <script>
-    let g = graph(document.getElementById('canvas'));
+    const canvas = document.getElementById('canvas');
+    canvas.height = window.innerHeight - 50;
+    canvas.width = window.innerWidth - 50;
+    let g = new Graph(canvas);
     document.getElementById('new-graph').onclick = function () {
-      g = graph(document.getElementById('canvas'));
+      g = new Graph(canvas);
     }
     document.getElementById('a-star').onclick = function () {
-      getShortestPath(g.graph, g.startKey, g.endKey)
+      g.getShortestPath();
     }
   </script>
 </body>
