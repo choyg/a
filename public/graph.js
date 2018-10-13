@@ -8,10 +8,10 @@ function graph(canvas) {
   generateEdges(graph);
   renderGraph(renderer, graph);
   // Start and ending vertices
-  const startKey = Math.floor(Math.random() * graph.size);
-  const endKey = Math.floor(Math.random() * graph.size);
-  const start = graph.get(startKey);
-  const end = graph.get(endKey);
+  const startKey = Math.floor(Math.random() * Object.keys(graph).length);
+  const endKey = Math.floor(Math.random() * Object.keys(graph).length);
+  const start = graph[startKey];
+  const end = graph[endKey];
   renderer.fillStyle = 'red';
   renderer.fillRect(start.x - 5, start.y - 5, 10, 10);
   renderer.fillRect(end.x - 5, end.y - 5, 10, 10);
@@ -20,16 +20,16 @@ function graph(canvas) {
   function renderGraph(renderer, vertices) {
     renderer.fillStyle = 'black';
     renderer.strokeStyle = 'grey';
-    vertices.forEach(vertex => {
-      vertex.vertices.forEach(key => {
-        const v = vertices.get(key);
+    Object.keys(vertices).forEach(vertex => {
+      vertices[vertex].vertices.forEach(key => {
+        const v = vertices[key];
         renderer.beginPath();
-        renderer.moveTo(vertex.x, vertex.y);
+        renderer.moveTo(vertices[vertex].x, vertices[vertex].y);
         renderer.lineTo(v.x, v.y);
         renderer.stroke();
       });
     });
-    vertices.forEach(v => renderer.fillRect(v.x - 5, v.y - 5, 10, 10));
+    Object.keys(vertices).forEach(v => renderer.fillRect(v.x - 5, v.y - 5, 10, 10));
   }
 
   /**
@@ -39,13 +39,12 @@ function graph(canvas) {
    * @returns {Map} vertices Map of Vertex objects
    */
   function generateVertices(count, width, height) {
-    const vertices = new Map();
+    const vertices = {};
     for (let i = 0; i < count; i++) {
-      vertices.set(i, {
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vertices: []
-      });
+      vertices[i] = {};
+      vertices[i]['x'] = Math.random() * width;
+      vertices[i]['y'] = Math.random() * height;
+      vertices[i]['vertices'] = [];
     }
     return vertices;
   }
@@ -55,12 +54,12 @@ function graph(canvas) {
    * @param {Map} vertices Map of Vertex objects
    */
   function generateEdges(vertices) {
-    vertices.forEach((v1, v1Key) => {
-      vertices.forEach((v2, v2Key) => {
+    Object.keys(vertices).forEach((v1Key, v1) => {
+      Object.keys(vertices).forEach((v2Key, v2) => {
         // Prob of a vertex depends on dist
-        if (dist(v1, v2) < 200 && Math.random() < 0.4) {
-          v2.vertices.push(v1Key);
-          v1.vertices.push(v2Key);
+        if (dist(vertices[v1Key], vertices[v2Key]) < 200 && Math.random() < 0.4) {
+          vertices[v2Key].vertices.push(v1Key);
+          vertices[v1Key].vertices.push(v2Key);
         }
       });
     });
@@ -85,10 +84,11 @@ function graph(canvas) {
  */
 function getShortestPath(graph, source, dest) {
   axios
-    .post('/graph', { vertexMap: graph, source, dest })
+    .post('/graph', JSON.stringify({ vertexMap: graph, source, dest }) )
     .then(response => {
       const path = response.data;
       console.log(path);
     })
     .catch(err => console.error(err));
 }
+
