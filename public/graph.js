@@ -100,12 +100,12 @@ class Graph {
       ctx.lineWidth = 5;
       ctx.strokeStyle = 'yellow';
       ctx.beginPath();
-      ctx.moveTo(this.graph[i].x, this.graph[i].y);
-      ctx.lineTo(this.graph[i + 1].x, this.graph[i + 1].y);
+      ctx.moveTo(this.graph[keys[i]].x, this.graph[keys[i]].y);
+      ctx.lineTo(this.graph[keys[i + 1]].x, this.graph[keys[i + 1]].y);
       ctx.stroke();
       if (i === 0) continue;
       ctx.fillStyle = 'green';
-      ctx.fillRect(this.graph[i].x - 5, this.graph[i].y - 5, 10, 10);
+      ctx.fillRect(this.graph[keys[i]].x - 5, this.graph[keys[i]].y - 5, 10, 10);
     }
   }
 
