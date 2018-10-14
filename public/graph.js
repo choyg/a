@@ -1,12 +1,14 @@
 class Graph {
   constructor(canvas) {
+    this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const vertexCount = 100;
+    const vertexCount = 1000;
     const graph = generateVertices(vertexCount, canvas.width, canvas.height);
     generateEdges(graph);
     this.graph = graph;
     renderGraph(canvas, graph);
+    panhandler(canvas, graph);
     // Start and ending vertices
     const startKey = Math.floor(Math.random() * Object.keys(graph).length);
     const endKey = Math.floor(Math.random() * Object.keys(graph).length);
@@ -76,6 +78,52 @@ class Graph {
     function dist(a, b) {
       return Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2));
     }
+
+    /**
+     *
+     * @param {HTMLCanvasElement} canvas
+     */
+    function panhandler(canvas, graph) {
+      let ctx = canvas.getContext('2d');
+      let pan = false;
+      let previousX = 0;
+      let previousY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let scale = 1;
+      canvas.onmousedown = mouseDown;
+      canvas.onmouseup = mouseUp;
+      canvas.onmousemove = mouseMove;
+      canvas.addEventListener('mousewheel', zoom);
+      canvas.addEventListener('DOMMouseScroll', zoom);
+
+      function mouseDown() {
+        pan = true;
+        previousX = event.clientX;
+        previousY = event.clientY;
+      }
+      function mouseUp() {
+        pan = false;
+      }
+      function mouseMove(event) {
+        if (!pan) return;
+        currentX += event.clientX - previousX;
+        currentY += event.clientY - previousY;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(scale, 0, 0, scale, currentX, currentY);
+        renderGraph(canvas, graph);
+        previousX = event.clientX;
+        previousY = event.clientY;
+      }
+      function zoom(event) {
+        scale += event.deltaY / -1000;
+        scale = Math.max(0.1, scale);
+        console.log(scale);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(scale, 0, 0, scale, currentX, currentY);
+        renderGraph(canvas, graph);
+      }
+    }
   }
 
   getShortestPath() {
@@ -121,3 +169,4 @@ class Graph {
     this.ctx.fillRect(vertex.x - 5, vertex.y - 5, 10, 10);
   }
 }
+

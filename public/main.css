@@ -39,9 +39,11 @@ button:hover {
 }
 #canvas {
   position: fixed;
-  z-index: -1;
+  top: 5;
+  left: 5;
 }
 .hover-menu {
+  z-index: 999;
   top: 20%;
   left: 10%;
   position: fixed;
@@ -49,3 +51,4 @@ button:hover {
   padding: 1rem;
   cursor: move;
 }
+

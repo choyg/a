@@ -23,10 +23,11 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="public/graph.js"></script>
   <script src="public/hovermenu.js"></script>
+  <script src="public/canvas.js"></script>
   <script>
     const canvas = document.getElementById('canvas');
-    canvas.height = window.innerHeight - 50;
-    canvas.width = window.innerWidth - 50;
+    canvas.height = window.innerHeight * 2;
+    canvas.width = window.innerWidth * 2;
     let g = new Graph(canvas);
     document.getElementById('new-graph').onclick = function () {
       g = new Graph(canvas);
